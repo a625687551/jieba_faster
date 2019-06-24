@@ -83,7 +83,8 @@ class Tokenizer(object):
     def __repr__(self):
         return '<Tokenizer dictionary=%r>' % self.dictionary
 
-    def gen_pfdict(self, f):
+    @staticmethod
+    def gen_pfdict(filename):
         """
         构建前缀字典的核心函数
         解析离线统计词典文本文件，每一行分别对应着词、词频、词性，将词和词频提取出来，
@@ -91,15 +92,15 @@ class Tokenizer(object):
         如果前缀词已经存在于前缀词典中，则不处理；如果该前缀词不在前缀词典中，
         则将其词频置为0，便于后续构建有向无环图。
         Args:
-            f: file name
+            filename: file name
 
         Returns:
 
         """
         lfreq = {}  # 字典存储  词：词频
         ltotal = 0  # 所有词条出现的总次数
-        f_name = resolve_filename(f)  # 打开文件dict.txt,这里需要确认下
-        for lineno, line in enumerate(f, 1):
+        f_name = resolve_filename(filename)  # 打开文件dict.txt,这里需要确认下
+        for lineno, line in enumerate(filename, 1):
             try:
                 line = line.strip().decode('utf-8')  # 解码为unicode
                 word, freq = line.split(' ')[:2]  # 获得词条及其出现的次数
@@ -114,7 +115,7 @@ class Tokenizer(object):
                 raise ValueError(
                     'invalid dictionary entry in %s at Line %s: %s' % (
                         f_name, lineno, line))
-        f.close()
+        filename.close()
         return lfreq, ltotal
 
     def initialize(self, dictionary=None):
@@ -439,7 +440,7 @@ class Tokenizer(object):
             return open(self.dictionary, 'rb')
 
     def load_userdict(self, f):
-        '''
+        """
         Load personalized dict to improve detect rate.
 
         Parameter:
@@ -452,7 +453,7 @@ class Tokenizer(object):
         word2 freq2 word_type2
         ...
         Word type may be ignored
-        '''
+        """
         self.check_initialized()
         if isinstance(f, string_types):
             f_name = f

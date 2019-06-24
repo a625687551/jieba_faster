@@ -21,7 +21,7 @@ jieba_faster
 安装说明
 =======
 
-代码对 Python 2/3 均兼容
+代码仅支持python3
 
 * 全自动安装：`easy_install jieba` 或者 `pip install jieba` / `pip3 install jieba`
 * 半自动安装：先下载 http://pypi.python.org/pypi/jieba/ ，解压后运行 `python setup.py install`
